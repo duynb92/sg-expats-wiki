@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookmarks</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Space+Grotesk:wght@700&family=Inter:wght@500&display=swap');
+
+    /* ── Tokens ── */
+    :root {
+      --bg:         #EEECE8;
+      --text:       #0C0C0C;
+      --accent:     #1B48D4;
+      --muted:      #6B6660;
+      --border:     #C4C1BB;
+      --sidebar-bg: #E6E3DE;
+      --hover-bg:   rgba(27, 72, 212, 0.06);
+      --header-h:   59px;
+      --sidebar-w:  220px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:         #141412;
+        --text:       #E8E5DF;
+        --accent:     #5577FF;
+        --muted:      #8C8882;
+        --border:     #2C2B28;
+        --sidebar-bg: #1A1917;
+        --hover-bg:   rgba(85, 119, 255, 0.09);
+      }
+    }
+
+    :root[data-theme="light"] {
+      --bg:         #EEECE8;
+      --text:       #0C0C0C;
+      --accent:     #1B48D4;
+      --muted:      #6B6660;
+      --border:     #C4C1BB;
+      --sidebar-bg: #E6E3DE;
+      --hover-bg:   rgba(27, 72, 212, 0.06);
+    }
+
+    :root[data-theme="dark"] {
+      --bg:         #141412;
+      --text:       #E8E5DF;
+      --accent:     #5577FF;
+      --muted:      #8C8882;
+      --border:     #2C2B28;
+      --sidebar-bg: #1A1917;
+      --hover-bg:   rgba(85, 119, 255, 0.09);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    /* ── Page Header ── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 3px solid var(--text);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .page-title {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .page-count {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.1s, border-color 0.1s;
+    }
+
+    .theme-toggle:hover { color: var(--text); border-color: var(--text); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: var(--header-h);
+      height: calc(100vh - var(--header-h));
+      overflow-y: auto;
+      padding: 28px 0 28px;
+    }
+
+    .sidebar-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 20px 14px;
+    }
+
+    .sidebar-nav { list-style: none; }
+
+    .sidebar-nav a {
+      display: block;
+      padding: 7px 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.1s, background 0.1s;
+    }
+
+    .sidebar-nav a:hover { color: var(--text); background: var(--hover-bg); }
+    .sidebar-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+    .sidebar-nav a.active { color: var(--accent); }
+
+    /* ── Content ── */
+    .content {
+      flex: 1;
+      min-width: 0;
+      padding: 44px 52px;
+    }
+
+    /* ── Section ── */
+    .section { margin-bottom: 52px; }
+
+    .section-header {
+      border-top: 3px solid var(--text);
+      padding-top: 10px;
+      margin-bottom: 20px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .section-count {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Item Grid ── */
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 4px;
+    }
+
+    /* ── Item ── */
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 14px 8px 12px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: transform 0.15s ease, background 0.12s;
+    }
+
+    .item:hover { transform: translateY(-2px); background: var(--hover-bg); }
+    .item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .item-icon {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+
+    .item-icon.errored { visibility: hidden; }
+
+    .item-title {
+      margin-top: 8px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
+      transition: color 0.1s;
+    }
+
+    .item:hover .item-title {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 2px;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      .page-header { padding: 12px 16px; }
+
+      .layout { flex-direction: column; }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 10px 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .sidebar-label { display: none; }
+
+      .sidebar-nav {
+        display: flex;
+        flex-direction: row;
+        padding: 0 16px;
+        gap: 2px;
+        white-space: nowrap;
+      }
+
+      .sidebar-nav a { padding: 6px 12px; border-radius: 2px; flex-shrink: 0; }
+
+      .content { padding: 24px 16px; }
+
+      .item-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+    }
+
+    @media (max-width: 375px) {
+      .item-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <span class="page-title">Bookmarks</span>
+  <div class="header-right">
+    <span class="page-count" id="link-count"></span>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">Theme</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" aria-label="Sections">
+    <div class="sidebar-label">Sections</div>
+    <nav>
+      <ul class="sidebar-nav" id="sidebar-nav"></ul>
+    </nav>
+  </aside>
+  <main class="content" id="content"></main>
+</div>
+
+<script>
+  const data = [
+    {
+      id: "productivity",
+      section: "Productivity",
+      items: [
+        { title: "Notion",      url: "https://notion.so" },
+        { title: "Linear",      url: "https://linear.app" },
+        { title: "Todoist",     url: "https://todoist.com" },
+        { title: "Obsidian",    url: "https://obsidian.md" },
+        { title: "Raycast",     url: "https://raycast.com" },
+        { title: "Loom",        url: "https://loom.com" },
+        { title: "Superhuman",  url: "https://superhuman.com" },
+        { title: "Cron",        url: "https://cron.com" },
+      ]
+    },
+    {
+      id: "development",
+      section: "Development",
+      items: [
+        { title: "GitHub",       url: "https://github.com" },
+        { title: "Vercel",       url: "https://vercel.com" },
+        { title: "Supabase",     url: "https://supabase.com" },
+        { title: "Railway",      url: "https://railway.app" },
+        { title: "Fly.io",       url: "https://fly.io" },
+        { title: "Cloudflare",   url: "https://cloudflare.com" },
+        { title: "BundlePhobia", url: "https://bundlephobia.com" },
+        { title: "Postman",      url: "https://postman.com" },
+      ]
+    },
+    {
+      id: "ai-tools",
+      section: "AI & LLMs",
+      items: [
+        { title: "Claude",       url: "https://claude.ai" },
+        { title: "ChatGPT",      url: "https://chatgpt.com" },
+        { title: "Perplexity",   url: "https://perplexity.ai" },
+        { title: "v0",           url: "https://v0.dev" },
+        { title: "Cursor",       url: "https://cursor.com" },
+        { title: "Replit",       url: "https://replit.com" },
+        { title: "Hugging Face", url: "https://huggingface.co" },
+        { title: "Together AI",  url: "https://together.ai" },
+      ]
+    },
+    {
+      id: "design",
+      section: "Design",
+      items: [
+        { title: "Figma",          url: "https://figma.com" },
+        { title: "Dribbble",       url: "https://dribbble.com" },
+        { title: "Mobbin",         url: "https://mobbin.com" },
+        { title: "Coolors",        url: "https://coolors.co" },
+        { title: "Heroicons",      url: "https://heroicons.com" },
+        { title: "Phosphor Icons", url: "https://phosphoricons.com" },
+        { title: "Unsplash",       url: "https://unsplash.com" },
+        { title: "Excalidraw",     url: "https://excalidraw.com" },
+      ]
+    },
+    {
+      id: "reference",
+      section: "Reference",
+      items: [
+        { title: "MDN Web Docs", url: "https://developer.mozilla.org" },
+        { title: "DevDocs",      url: "https://devdocs.io" },
+        { title: "Can I Use",    url: "https://caniuse.com" },
+        { title: "Regex101",     url: "https://regex101.com" },
+        { title: "JSON Crack",   url: "https://jsoncrack.com" },
+        { title: "Transform",    url: "https://transform.tools" },
+        { title: "CSS-Tricks",   url: "https://css-tricks.com" },
+        { title: "TypeScript",   url: "https://typescriptlang.org" },
+      ]
+    },
+    {
+      id: "reading",
+      section: "Reading",
+      items: [
+        { title: "Hacker News",        url: "https://news.ycombinator.com" },
+        { title: "Lobsters",           url: "https://lobste.rs" },
+        { title: "Pragmatic Engineer", url: "https://pragmaticengineer.com" },
+        { title: "Stratechery",        url: "https://stratechery.com" },
+        { title: "Quanta Magazine",    url: "https://quantamagazine.org" },
+        { title: "Morning Brew",       url: "https://morningbrew.com" },
+      ]
+    },
+    {
+      id: "finance",
+      section: "Finance",
+      items: [
+        { title: "Stripe",      url: "https://stripe.com" },
+        { title: "Mercury",     url: "https://mercury.com" },
+        { title: "Fathom",      url: "https://usefathom.com" },
+        { title: "Paddle",      url: "https://paddle.com" },
+        { title: "AngelList",   url: "https://angellist.com" },
+        { title: "Crunchbase",  url: "https://crunchbase.com" },
+      ]
+    },
+    {
+      id: "community",
+      section: "Community",
+      items: [
+        { title: "Product Hunt",  url: "https://producthunt.com" },
+        { title: "Indie Hackers", url: "https://indiehackers.com" },
+        { title: "Dev.to",        url: "https://dev.to" },
+        { title: "r/programming", url: "https://reddit.com/r/programming" },
+        { title: "X / Twitter",   url: "https://x.com" },
+        { title: "Discord",       url: "https://discord.com" },
+      ]
+    },
+  ];
+
+  function getFaviconUrl(url) {
+    try {
+      const domain = new URL(url).hostname;
+      return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+    } catch {
+      return '';
+    }
+  }
+
+  function render() {
+    const nav = document.getElementById('sidebar-nav');
+    const content = document.getElementById('content');
+    let totalLinks = 0;
+
+    data.forEach(({ id, section, items }) => {
+      totalLinks += items.length;
+
+      // Sidebar entry
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${id}`;
+      a.textContent = section;
+      li.appendChild(a);
+      nav.appendChild(li);
+
+      // Section
+      const sec = document.createElement('section');
+      sec.className = 'section';
+      sec.id = id;
+
+      const h2 = document.createElement('h2');
+      h2.className = 'section-header';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = section;
+
+      const countSpan = document.createElement('span');
+      countSpan.className = 'section-count';
+      countSpan.textContent = `${items.length}`;
+
+      h2.appendChild(nameSpan);
+      h2.appendChild(countSpan);
+      sec.appendChild(h2);
+
+      const grid = document.createElement('div');
+      grid.className = 'item-grid';
+
+      items.forEach(({ title, url }) => {
+        const link = document.createElement('a');
+        link.className = 'item';
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+
+        const img = document.createElement('img');
+        img.className = 'item-icon';
+        img.src = getFaviconUrl(url);
+        img.alt = '';
+        img.width = 48;
+        img.height = 48;
+        img.loading = 'lazy';
+        img.addEventListener('error', function () {
+          this.classList.add('errored');
+        });
+
+        const span = document.createElement('span');
+        span.className = 'item-title';
+        span.textContent = title;
+
+        link.appendChild(img);
+        link.appendChild(span);
+        grid.appendChild(link);
+      });
+
+      sec.appendChild(grid);
+      content.appendChild(sec);
+    });
+
+    document.getElementById('link-count').textContent = `${totalLinks} links`;
+  }
+
+  // Sync --header-h to actual header height
+  function syncHeaderHeight() {
+    const h = document.querySelector('.page-header').offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+  }
+
+  // Active sidebar link via IntersectionObserver
+  function initActiveNav() {
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.sidebar-nav a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -80% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  }
+
+  // Theme toggle
+  function initThemeToggle() {
+    const btn = document.getElementById('theme-toggle');
+    const root = document.documentElement;
+
+    const saved = localStorage.getItem('theme');
+    if (saved) root.setAttribute('data-theme', saved);
+
+    btn.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme');
+      const isDark = current === 'dark' ||
+        (!current && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      const next = isDark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+  }
+
+  render();
+  syncHeaderHeight();
+  initActiveNav();
+  initThemeToggle();
+  window.addEventListener('resize', syncHeaderHeight);
+</script>
+
+</body>
+</html>

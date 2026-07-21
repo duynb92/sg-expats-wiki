@@ -1,0 +1,282 @@
+[
+  {
+    "id": "productivity",
+    "section": "Productivity",
+    "items": [
+      {
+        "title": "Notion1",
+        "url": "https://notion.so"
+      },
+      {
+        "title": "Linear",
+        "url": "https://linear.app111"
+      },
+      {
+        "title": "Todoist",
+        "url": "https://todoist.com"
+      },
+      {
+        "title": "Obsidian",
+        "url": "https://obsidian.md"
+      },
+      {
+        "title": "Raycast",
+        "url": "https://raycast.com"
+      },
+      {
+        "title": "Loom",
+        "url": "https://loom.com"
+      },
+      {
+        "title": "Superhuman",
+        "url": "https://superhuman.com"
+      },
+      {
+        "title": "Cron",
+        "url": "https://cron.com"
+      }
+    ]
+  },
+  {
+    "id": "development",
+    "section": "Development",
+    "items": [
+      {
+        "title": "GitHub",
+        "url": "https://github.com"
+      },
+      {
+        "title": "Vercel",
+        "url": "https://vercel.com"
+      },
+      {
+        "title": "Supabase",
+        "url": "https://supabase.com"
+      },
+      {
+        "title": "Railway",
+        "url": "https://railway.app"
+      },
+      {
+        "title": "Fly.io",
+        "url": "https://fly.io"
+      },
+      {
+        "title": "Cloudflare",
+        "url": "https://cloudflare.com"
+      },
+      {
+        "title": "BundlePhobia",
+        "url": "https://bundlephobia.com"
+      },
+      {
+        "title": "Postman",
+        "url": "https://postman.com"
+      }
+    ]
+  },
+  {
+    "id": "ai-tools",
+    "section": "AI & LLMs",
+    "items": [
+      {
+        "title": "Claude",
+        "url": "https://claude.ai"
+      },
+      {
+        "title": "ChatGPT",
+        "url": "https://chatgpt.com"
+      },
+      {
+        "title": "Perplexity",
+        "url": "https://perplexity.ai"
+      },
+      {
+        "title": "v0",
+        "url": "https://v0.dev"
+      },
+      {
+        "title": "Cursor",
+        "url": "https://cursor.com"
+      },
+      {
+        "title": "Replit",
+        "url": "https://replit.com"
+      },
+      {
+        "title": "Hugging Face",
+        "url": "https://huggingface.co"
+      },
+      {
+        "title": "Together AI",
+        "url": "https://together.ai"
+      }
+    ]
+  },
+  {
+    "id": "design",
+    "section": "Design",
+    "items": [
+      {
+        "title": "Figma",
+        "url": "https://figma.com"
+      },
+      {
+        "title": "Dribbble",
+        "url": "https://dribbble.com"
+      },
+      {
+        "title": "Mobbin",
+        "url": "https://mobbin.com"
+      },
+      {
+        "title": "Coolors",
+        "url": "https://coolors.co"
+      },
+      {
+        "title": "Heroicons",
+        "url": "https://heroicons.com"
+      },
+      {
+        "title": "Phosphor Icons",
+        "url": "https://phosphoricons.com"
+      },
+      {
+        "title": "Unsplash",
+        "url": "https://unsplash.com"
+      },
+      {
+        "title": "Excalidraw",
+        "url": "https://excalidraw.com"
+      }
+    ]
+  },
+  {
+    "id": "reference",
+    "section": "Reference",
+    "items": [
+      {
+        "title": "MDN Web Docs",
+        "url": "https://developer.mozilla.org"
+      },
+      {
+        "title": "DevDocs",
+        "url": "https://devdocs.io"
+      },
+      {
+        "title": "Can I Use",
+        "url": "https://caniuse.com"
+      },
+      {
+        "title": "Regex101",
+        "url": "https://regex101.com"
+      },
+      {
+        "title": "JSON Crack",
+        "url": "https://jsoncrack.com"
+      },
+      {
+        "title": "Transform",
+        "url": "https://transform.tools"
+      },
+      {
+        "title": "CSS-Tricks",
+        "url": "https://css-tricks.com"
+      },
+      {
+        "title": "TypeScript",
+        "url": "https://typescriptlang.org"
+      }
+    ]
+  },
+  {
+    "id": "reading",
+    "section": "Reading",
+    "items": [
+      {
+        "title": "Hacker News",
+        "url": "https://news.ycombinator.com"
+      },
+      {
+        "title": "Lobsters",
+        "url": "https://lobste.rs"
+      },
+      {
+        "title": "Pragmatic Engineer",
+        "url": "https://pragmaticengineer.com"
+      },
+      {
+        "title": "Stratechery",
+        "url": "https://stratechery.com"
+      },
+      {
+        "title": "Quanta Magazine",
+        "url": "https://quantamagazine.org"
+      },
+      {
+        "title": "Morning Brew",
+        "url": "https://morningbrew.com"
+      }
+    ]
+  },
+  {
+    "id": "finance",
+    "section": "Finance",
+    "items": [
+      {
+        "title": "Stripe",
+        "url": "https://stripe.com"
+      },
+      {
+        "title": "Mercury",
+        "url": "https://mercury.com"
+      },
+      {
+        "title": "Fathom",
+        "url": "https://usefathom.com"
+      },
+      {
+        "title": "Paddle",
+        "url": "https://paddle.com"
+      },
+      {
+        "title": "AngelList",
+        "url": "https://angellist.com"
+      },
+      {
+        "title": "Crunchbase",
+        "url": "https://crunchbase.com"
+      }
+    ]
+  },
+  {
+    "id": "community",
+    "section": "Community",
+    "items": [
+      {
+        "title": "Product Hunt",
+        "url": "https://producthunt.com"
+      },
+      {
+        "title": "Indie Hackers",
+        "url": "https://indiehackers.com"
+      },
+      {
+        "title": "Dev.to",
+        "url": "https://dev.to"
+      },
+      {
+        "title": "r/programming",
+        "url": "https://reddit.com/r/programming"
+      },
+      {
+        "title": "X / Twitter",
+        "url": "https://x.com"
+      },
+      {
+        "title": "Discord",
+        "url": "https://discord.com"
+      }
+    ]
+  }
+]
